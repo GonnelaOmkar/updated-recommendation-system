@@ -44,7 +44,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 JWT_SECRET = os.getenv("JWT_SECRET")
 # Replaced MongoDB with SQLite integration for backend-auth compatibility
 
-SQLITE_DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'database.sqlite')
+SQLITE_DB_PATH = os.path.join(os.path.dirname(__file__), 'db', 'database.sqlite')
 
 def _get_user_from_sqlite(user_id):
     """Fetch user and favorites from the SQLite database."""
