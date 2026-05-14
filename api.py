@@ -430,7 +430,7 @@ def _taste_profile_recs_for_category(user_id: str, cat: str, top_k: int = 50):
         return music_df.iloc[kept]
 
 # --- For-You endpoints per category ---
-@app.get("/recommend/for-you/book")
+@app.get("/api/ml/recommend/for-you/book")
 async def get_for_you_books(token: str):
     try:
         decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
@@ -445,7 +445,7 @@ async def get_for_you_books(token: str):
     except Exception as e:
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
 
-@app.get("/recommend/for-you/music")
+@app.get("/api/ml/recommend/for-you/music")
 async def get_for_you_music(token: str):
     try:
         decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
@@ -461,7 +461,7 @@ async def get_for_you_music(token: str):
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
 
 # --- Hybrid endpoint (content-based + collaborative for movies) ---
-@app.get("/recommend/for-you/hybrid")
+@app.get("/api/ml/recommend/for-you/hybrid")
 async def get_hybrid_for_you_recommendations(token: str):
     try:
         decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
@@ -482,7 +482,7 @@ async def get_hybrid_for_you_recommendations(token: str):
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
 
 # --- Random-from-favorites endpoint (per category) ---
-@app.get("/recommend/favorites/random/{category}")
+@app.get("/api/ml/recommend/favorites/random/{category}")
 async def get_random_from_favorites(category: str, token: str, limit: int = 10):
     try:
         decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
@@ -534,7 +534,7 @@ def find_movies_by_vibe(vibe_text: str, df: pd.DataFrame, top_n: int = 5):
 movie_df = load_movie_data()
 book_df = load_book_data()
 music_df = load_music_data()
-@app.get("/movie/details/{tmdb_id}")
+@app.get("/api/ml/movie/details/{tmdb_id}")
 async def get_movie_details(tmdb_id: int):
     """Fetches detailed movie information from OMDb using a tmdbId."""
     try:
@@ -570,24 +570,24 @@ async def get_movie_details(tmdb_id: int):
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Failed to connect to OMDb API: {e}")
 
-@app.get("/")
+@app.get("/api/ml/")
 async def read_root():
     return JSONResponse(content={"message": "Welcome to the Recommender API!"})
 
-@app.get("/search/movie/{query}")
+@app.get("/api/ml/search/movie/{query}")
 async def search_movies_api(query: str):
     if len(query) < 2: return JSONResponse(content={"results": []})
     search_term = process_title_for_search(query)
     matches = movie_df[movie_df['search_title'].str.contains(search_term, na=False)].head(10)
     return JSONResponse(content={"results": matches['title'].tolist()})
-@app.get("/search/book/{query}")
+@app.get("/api/ml/search/book/{query}")
 async def search_books_api(query: str):
     if len(query) < 2: return JSONResponse(content={"results": []})
     search_term = process_title_for_search(query)
     matches = book_df[book_df['search_title'].str.contains(search_term, na=False)].head(10)
     return JSONResponse(content={"results": matches['title'].tolist()})
 
-@app.get("/search/music/{query}")
+@app.get("/api/ml/search/music/{query}")
 async def search_music_api(query: str):
     if len(query) < 2: return JSONResponse(content={"results": []})
     
@@ -598,7 +598,7 @@ async def search_music_api(query: str):
     results = (matches['track_name'] + " - " + matches['artist_name']).tolist()
     return JSONResponse(content={"results": results})
 
-@app.get("/search/genre/book/{query}")
+@app.get("/api/ml/search/genre/book/{query}")
 async def search_book_genres_api(query: str):
     if len(query) < 3: return JSONResponse(content={"results": []})
     
@@ -614,7 +614,7 @@ async def search_book_genres_api(query: str):
     matches = [genre.strip() for genre in genres if search_term in genre.strip()]
     return JSONResponse(content={"results": list(set(matches))[:10]})
 
-@app.get("/search/genre/music/{query}")
+@app.get("/api/ml/search/genre/music/{query}")
 async def search_music_genres_api(query: str):
     if len(query) < 3: 
         return JSONResponse(content={"results": []})
@@ -639,7 +639,7 @@ async def search_music_genres_api(query: str):
     
     # Return the top 10 unique matches
     return JSONResponse(content={"results": list(set(matches))[:10]})
-@app.get("/recommend/movie/{movie_title}")
+@app.get("/api/ml/recommend/movie/{movie_title}")
 async def get_movie_recommendations_api(movie_title: str):
     search_term = process_title_for_search(movie_title)
     original_movie_df = movie_df[movie_df['search_title'] == search_term]
@@ -659,7 +659,7 @@ async def get_movie_recommendations_api(movie_title: str):
     
     return JSONResponse(content={"recommendations": results_df.to_dict('records'), "explanation": explanation_text})
 
-@app.post("/vibe")
+@app.post("/api/ml/vibe")
 async def find_movies_by_vibe_api(request: VibeRequest):
     results_df = find_movies_by_vibe(request.vibe_text, movie_df)
     if results_df.empty: return JSONResponse(content={"error": "Could not find any matches."}, status_code=404)
@@ -670,7 +670,7 @@ async def find_movies_by_vibe_api(request: VibeRequest):
     response_df = response_df.replace({np.nan: None})
     return JSONResponse(content={"recommendations": response_df.to_dict('records')})
 
-@app.get("/recommend/book/{book_title}")
+@app.get("/api/ml/recommend/book/{book_title}")
 async def get_book_recommendations_api(book_title: str):
     search_term = process_title_for_search(book_title)
     original_book_df = book_df[book_df['search_title'] == search_term]
@@ -690,7 +690,7 @@ async def get_book_recommendations_api(book_title: str):
     
     return JSONResponse(content={"recommendations": results_df.to_dict('records'), "explanation": explanation_text})
 
-@app.get("/recommend/music/{track_title}")
+@app.get("/api/ml/recommend/music/{track_title}")
 async def get_music_recommendations_api(track_title: str):
     normalized_input = track_title.split(" - ")[0].strip()
     search_term = process_title_for_search(normalized_input)
@@ -716,7 +716,7 @@ async def get_music_recommendations_api(track_title: str):
 
     return JSONResponse(content={"recommendations": results_df.to_dict("records"), "explanation": explanation_text})
 
-@app.get("/recommend/genre/movie/{genre}")
+@app.get("/api/ml/recommend/genre/movie/{genre}")
 async def get_random_movies_by_genre(genre: str, limit: int = 10):
     genre_lower = genre.lower()
     matches = movie_df[movie_df['genres'].str.lower().str.contains(genre_lower, na=False)]
@@ -736,7 +736,7 @@ async def get_random_movies_by_genre(genre: str, limit: int = 10):
     
     return JSONResponse(content={"recommendations": results_df.to_dict('records'), "explanation": explanation_text})
 
-@app.get("/recommend/genre/book/{genre}")
+@app.get("/api/ml/recommend/genre/book/{genre}")
 async def get_random_books_by_genre(genre: str, limit: int = 10):
     genre_lower = genre.lower()
     
@@ -769,7 +769,7 @@ async def get_random_books_by_genre(genre: str, limit: int = 10):
     explanation_text = get_genre_explanation(genre, "book")
     
     return JSONResponse(content={"recommendations": results_df.to_dict('records'), "explanation": explanation_text})
-@app.get("/recommend/genre/music/{genre}")
+@app.get("/api/ml/recommend/genre/music/{genre}")
 async def get_random_music_by_genre(genre: str, limit: int = 10):
     genre_lower = genre.lower()
 
@@ -804,7 +804,7 @@ async def get_random_music_by_genre(genre: str, limit: int = 10):
     explanation_text = get_genre_explanation(genre, "music")
 
     return JSONResponse(content={"recommendations": results_df.to_dict('records'), "explanation": explanation_text})
-@app.get("/recommend/for-you")
+@app.get("/api/ml/recommend/for-you")
 async def get_for_you_recommendations(token: str):
     try:
         decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])

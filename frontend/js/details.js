@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contentEl = document.getElementById("movieContent");
 
   // Re-use the API_BASE from your main script if possible, or define it again
-  const API_BASE = "http://54.221.61.226:8000";
+  
 
   // Get the movie ID from the URL query parameter
   const params = new URLSearchParams(window.location.search);
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const response = await fetch(`${API_BASE}/movie/details/${tmdbId}`);
+    const response = await fetch(`/api/ml/movie/details/${tmdbId}`);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.detail || "Movie not found");

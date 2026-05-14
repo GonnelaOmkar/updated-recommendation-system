@@ -164,7 +164,7 @@ function clearToken() {
 }
 
 const MAIN_PAGE = window.MAIN_PAGE || "index.html"
-const API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
+const API_BASE = (window.AUTH_API_BASE || "").replace(/\/$/, "")
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Get all HTML elements ---
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = getToken()
     if (!token) return
     try {
-      const resp = await fetch(`${API_BASE}/api/auth/me`, {
+      const resp = await fetch(`/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (resp.ok) {
@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = true
 
       try {
-        const response = await fetch(`${API_BASE}/api/auth/register`, {
+        const response = await fetch(`/api/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken() || ""}` },
           body: JSON.stringify({ name, email, password }),
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = true
 
       try {
-        const response = await fetch(`${API_BASE}/api/auth/login`, {
+        const response = await fetch(`/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),

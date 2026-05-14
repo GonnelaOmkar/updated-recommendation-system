@@ -1,6 +1,6 @@
 // Profile Page JavaScript
 
-const AUTH_API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
+const AUTH_API_BASE = (window.AUTH_API_BASE || "").replace(/\/$/, "")
 
 function getAuthToken() {
   try {
@@ -26,7 +26,7 @@ async function checkAuth() {
   }
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/api/auth/me`, {
+    const res = await fetch(`/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
@@ -82,7 +82,7 @@ document.getElementById("changePasswordForm").addEventListener("submit", async (
   if (!token) return
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/api/auth/change-password`, {
+    const res = await fetch(`/api/auth/change-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

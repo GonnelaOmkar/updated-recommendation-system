@@ -1,7 +1,7 @@
 // Favorites Page JavaScript
 
-const AUTH_API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
-const DEFAULT_API_BASE = "http://54.221.61.226:8000"
+const AUTH_API_BASE = (window.AUTH_API_BASE || "").replace(/\/$/, "")
+const DEFAULT_API_BASE = ""
 const RAW_API_BASE = (typeof window !== "undefined" && window.API_BASE) || ""
 const API_BASE = /^https?:\/\//.test(RAW_API_BASE) ? RAW_API_BASE.replace(/\/$/, "") : DEFAULT_API_BASE
 
@@ -29,7 +29,7 @@ async function checkAuth() {
   }
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/api/auth/me`, {
+    const res = await fetch(`/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
@@ -86,7 +86,7 @@ async function loadFavorites(filter = "all") {
     '<div class="loading-favorites"><i class="fas fa-spinner fa-spin"></i><p>Loading your favorites...</p></div>'
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/api/auth/favorites`, {
+    const res = await fetch(`/api/auth/favorites`, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
@@ -206,7 +206,7 @@ async function removeFavorite(id) {
   if (!token) return
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/api/auth/favorites/${id}`, {
+    const res = await fetch(`/api/auth/favorites/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -346,7 +346,7 @@ function createPersonalizedCard(rec, type) {
     }
 
     try {
-      const res = await fetch(`${AUTH_API_BASE}/api/auth/favorites`, {
+      const res = await fetch(`/api/auth/favorites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `
 
     try {
-      const res = await fetch(`${API_BASE}/recommend/favorites/random/${active}?token=${encodeURIComponent(token)}`)
+      const res = await fetch(`/api/ml/recommend/favorites/random/${active}?token=${encodeURIComponent(token)}`)
 
       if (!res.ok && res.status !== 404) {
         throw new Error(`HTTP error! status: ${res.status}`)

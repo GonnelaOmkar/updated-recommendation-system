@@ -12,13 +12,13 @@ const suggestionsBox = document.getElementById("suggestions-box");
 const explanationContainer = document.getElementById("explanation-container");
 
 // API base with safe default and optional override via window.API_BASE
-const DEFAULT_API_BASE = "http://54.221.61.226:8000";
+const DEFAULT_API_BASE = "";
 const RAW_API_BASE = (typeof window !== "undefined" && window.API_BASE) || "";
 const API_BASE = /^https?:\/\//.test(RAW_API_BASE)
   ? RAW_API_BASE.replace(/\/$/, "")
   : DEFAULT_API_BASE;
 
-const AUTH_API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "");
+const AUTH_API_BASE = (window.AUTH_API_BASE || "").replace(/\/$/, "");
 
 let activeCategory = "movies";
 let selectedSuggestionIndex = -1;
@@ -144,7 +144,7 @@ async function toggleFavorite(item, category) {
       : "";
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/api/auth/favorites`, {
+    const res = await fetch(`/api/auth/favorites`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -344,7 +344,7 @@ async function showSearchSuggestions(query) {
   const suggestionsEl =
     document.getElementById("searchSuggestions") || createSuggestionsEl();
   positionSuggestionsEl();
-  const endpoint = `${API_BASE}/search/${categoryToPath(
+  const endpoint = `/api/ml/search/${categoryToPath(
     activeCategory
   )}/${encodeURIComponent(query)}`;
 
@@ -384,7 +384,7 @@ async function showGenreSuggestions(query) {
   const suggestionsEl =
     document.getElementById("genreSuggestions") || createGenreSuggestionsEl();
   positionSuggestionsEl(true);
-  const endpoint = `${API_BASE}/search/genre/${categoryToPath(
+  const endpoint = `/api/ml/search/genre/${categoryToPath(
     activeCategory
   )}/${encodeURIComponent(query)}`;
 
@@ -526,7 +526,7 @@ async function fetchGenreRecommendations(genre, category) {
   const grid = activeSection?.querySelector(".content-grid");
   if (!grid) return;
 
-  const endpoint = `${API_BASE}/recommend/genre/${categoryToPath(
+  const endpoint = `/api/ml/recommend/genre/${categoryToPath(
     category
   )}/${encodeURIComponent(genre)}`;
   // Removed grid loading since we have overlay
@@ -577,7 +577,7 @@ async function fetchAndRenderRecommendations(query, category) {
   const activeSection = document.querySelector(".content-section.active");
   const grid = activeSection?.querySelector(".content-grid");
   if (!grid) return;
-  const endpoint = `${API_BASE}/recommend/${categoryToPath(
+  const endpoint = `/api/ml/recommend/${categoryToPath(
     category
   )}/${encodeURIComponent(query)}`;
 

@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         // --- THIS IS THE FIX ---
         // Use port 8001 for all fetch calls
-        const response = await fetch(`http://54.221.61.226:8000/search/${type}/${query}`)
+        const response = await fetch(`/api/ml/search/${type}/${query}`)
         const data = await response.json()
         const suggestions = data.results || []
         suggestionsBoxEl.innerHTML = ""
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let finalSeconds = 0
     try {
       // --- THIS IS THE FIX ---
-      const response = await fetch(`http://54.221.61.226:8000/recommend/movie/${movieTitle}`)
+      const response = await fetch(`/api/ml/recommend/movie/${movieTitle}`)
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
       const data = await response.json()
       if (data.error) {
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let finalSeconds = 0
     try {
       // --- THIS IS THE FIX ---
-      const response = await fetch(`http://54.221.61.226:8000/recommend/book/${bookTitle}`)
+      const response = await fetch(`/api/ml/recommend/book/${bookTitle}`)
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
       const data = await response.json()
 
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return
     }
     try {
-      const response = await fetch(`http://54.221.61.226:8000/search/movie/${query}`)
+      const response = await fetch(`/api/ml/search/movie/${query}`)
       const data = await response.json()
       movieSuggestionsBox.innerHTML = ""
       if (data.results) {
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const timer = startLoading()
     let finalSeconds = 0
     try {
-      const response = await fetch(`http://54.221.61.226:8000/recommend/movie/${movieTitle}`)
+      const response = await fetch(`/api/ml/recommend/movie/${movieTitle}`)
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
       const data = await response.json()
 
@@ -323,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return
     }
     try {
-      const response = await fetch(`http://54.221.61.226:8000/search/book/${query}`)
+      const response = await fetch(`/api/ml/search/book/${query}`)
       const data = await response.json()
       bookSuggestionsBox.innerHTML = ""
       if (data.results) {
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const timer = startLoading()
     let finalSeconds = 0
     try {
-      const response = await fetch(`http://54.221.61.226:8000/recommend/book/${bookTitle}`)
+      const response = await fetch(`/api/ml/recommend/book/${bookTitle}`)
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
       const data = await response.json()
 

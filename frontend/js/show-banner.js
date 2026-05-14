@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     authBanner.style.display = "block"
   }
 
-  const API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
+  const API_BASE = (window.AUTH_API_BASE || "").replace(/\/$/, "")
 
   // --- LOGIC FOR THE MAIN LOGIN/SIGNUP PAGE ---
   if (isLoginPage) {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault()
       const email = document.getElementById("resetEmail").value
       try {
-        const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
+        const response = await fetch(`/api/auth/forgot-password`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const response = await fetch(`${API_BASE}/api/auth/reset-password/${token}`, {
+        const response = await fetch(`/api/auth/reset-password/${token}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ password: newPassword }),
