@@ -164,7 +164,7 @@ function clearToken() {
 }
 
 const MAIN_PAGE = window.MAIN_PAGE || "index.html"
-const API_BASE = (window.AUTH_API_BASE || "http://localhost:8081").replace(/\/$/, "")
+const API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Get all HTML elements ---

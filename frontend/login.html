@@ -29,7 +29,7 @@
             <div class="auth-field password-field">
                 <label for="signinPassword">Password</label>
                 <input id="signinPassword" name="password" type="password" placeholder="••••••••" required />
-                <button type="button" class="toggle-password">
+                <button type="button" class="password-toggle" data-target="signinPassword">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                         <circle cx="12" cy="12" r="3"></circle>
@@ -51,11 +51,13 @@
                 <button type="submit" class="auth-btn">Sign In</button>
             </div>
 
-            <div class="divider" style="display: flex; align-items: center; gap: 10px;">
+            <div class="divider">
                 <span>or continue with</span>
+            </div>
+
+            <div style="display: flex; justify-content: center; margin-bottom: 20px; color-scheme: light;">
                 <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-                    data-text="sign_in_with" data-shape="rectangular"
-                    style="margin: 0; padding: 0; border: none; background: none;"></div>
+                    data-text="sign_in_with" data-shape="rectangular"></div>
             </div>
 
             <div class="alt">
@@ -65,7 +67,7 @@
     </div>
 
     <script>
-        window.AUTH_API_BASE = window.AUTH_API_BASE || "http://localhost:8081";
+        window.AUTH_API_BASE = window.AUTH_API_BASE || "http://54.221.61.226:8081";
         window.MAIN_PAGE = window.MAIN_PAGE || "index.html";
 
         window.handleCredentialResponse = async function (response) {
@@ -99,7 +101,7 @@
     </div>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="js/auth.js"></script>
-    <script src="js/auth-interactive.js"></script>
+    <script src="js/auth-interactive.js?v=2"></script>
 </body>
 
 </html>

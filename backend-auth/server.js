@@ -1,6 +1,6 @@
 require("dotenv").config()
 const express = require("express")
-const mongoose = require("mongoose")
+const sequelize = require('./config/database');
 const cors = require("cors")
 const helmet = require("helmet")
 const rateLimit = require("express-rate-limit")
@@ -19,11 +19,13 @@ app.use(express.json())
 // --- DATABASE CONNECTION ---
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI)
-    console.log("MongoDB connected successfully!")
+    await sequelize.authenticate();
+    console.log("SQLite connected successfully!");
+    // Sync models to the database (creates table if not exists)
+    await sequelize.sync({ alter: true });
+    console.log("Database models synchronized.");
   } catch (err) {
-    console.error("MongoDB connection error:", err.message)
-    process.exit(1)
+    console.error("WARNING: SQLite connection error:", err.message);
   }
 }
 connectDB()

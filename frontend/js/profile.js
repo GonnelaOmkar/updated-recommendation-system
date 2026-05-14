@@ -1,6 +1,6 @@
 // Profile Page JavaScript
 
-const AUTH_API_BASE = (window.AUTH_API_BASE || "http://localhost:8081").replace(/\/$/, "")
+const AUTH_API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
 
 function getAuthToken() {
   try {

@@ -67,9 +67,12 @@
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.4",
     "router": "^2.2.0",
+    "sequelize": "^6.37.8",
     "sonner": "^1.7.4",
+    "sqlite3": "^6.0.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^14.0.0",
     "vaul": "^0.9.9",
     "zod": "3.25.67"
   },

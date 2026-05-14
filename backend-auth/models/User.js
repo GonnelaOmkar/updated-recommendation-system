@@ -1,78 +1,67 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+const bcrypt = require('bcryptjs');
 
-// Define the structure of the User document
-const UserSchema = new mongoose.Schema({
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   name: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   email: {
-    type: String,
-    required: true,
-    unique: true, // No two users can have the same email
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
   },
   password: {
-    type: String, // Removed required: true to make it optional
+    type: DataTypes.STRING,
+    allowNull: true // Optional for Google Auth
   },
   googleId: {
-    type: String, // Added for Google authentication
+    type: DataTypes.STRING,
+    allowNull: true
   },
-  date: {
-    type: Date,
-    default: Date.now,
+  passwordResetToken: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  favorites: [
-    {
-      itemType: {
-        type: String,
-        enum: ["movie", "book", "music"],
-        required: true,
-      },
-      itemId: {
-        type: String,
-        required: true,
-      },
-      title: {
-        type: String,
-        required: true,
-      },
-      posterUrl: String,
-      addedAt: {
-        type: Date,
-        default: Date.now,
-      },
+  passwordResetExpires: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  favorites: {
+    type: DataTypes.TEXT, // Storing JSON array as TEXT in SQLite
+    defaultValue: '[]',
+    get() {
+      const rawValue = this.getDataValue('favorites');
+      return rawValue ? JSON.parse(rawValue) : [];
     },
-  ],
-});
-
-// --- Password Hashing Logic and Email Normalization ---
-// This special function runs automatically BEFORE a user is saved to the database.
-UserSchema.pre("save", async function (next) {
-  // Normalize email to lowercase before save
-  if (this.isModified("email") && this.email) {
-    this.email = this.email.toLowerCase();
+    set(value) {
+      this.setDataValue('favorites', JSON.stringify(value));
+    }
   }
+}, {
+  hooks: {
+    beforeSave: async (user) => {
+      // Normalize email
+      if (user.changed('email') && user.email) {
+        user.email = user.email.toLowerCase();
+      }
 
-  // Only hash the password if it has been modified (or is new) and googleId is not present
-  if (!this.isModified("password") || this.googleId) {
-    return next();
-  }
-
-  try {
-    // Generate a "salt" to make the hash more secure
-    const salt = await bcrypt.genSalt(10);
-    // Hash the password using the salt
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
+      // Hash password if changed and no googleId
+      if (user.changed('password') && user.password && !user.googleId) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    }
   }
 });
-
-// Create the User model from the schema and export it
-const User = mongoose.model("user", UserSchema);
 
 module.exports = User;

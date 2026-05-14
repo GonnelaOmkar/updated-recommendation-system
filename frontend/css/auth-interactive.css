@@ -4,6 +4,10 @@
   position: relative;
 }
 
+.password-field input {
+  padding-right: 40px;
+}
+
 .password-toggle {
   position: absolute;
   right: 14px;

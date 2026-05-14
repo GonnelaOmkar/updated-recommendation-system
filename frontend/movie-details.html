@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0c0a09;
+      color: #e2e8f0;
+    }
+
+    .details-container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #18181b;
+      border-radius: 12px;
+    }
+
+    /* --- ADD THIS STYLE FOR THE BACK BUTTON --- */
+    .back-button {
+      margin-bottom: 25px;
+      display: inline-block;
+      color: #a1a1aa;
+      border-color: #3f3f46;
+      font-weight: 500;
+    }
+
+    .back-button:hover {
+      color: #ffffff;
+      background-color: #3f3f46;
+      border-color: #3f3f46;
+    }
+
+    /* --- END OF NEW STYLES --- */
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 30px;
+    }
+
+    .details-poster img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .details-info h1 {
+      font-size: 2.5rem;
+      margin-top: 0;
+    }
+
+    .details-meta {
+      display: flex;
+      gap: 20px;
+      margin: 10px 0;
+      color: #a1a1aa;
+    }
+
+    .details-plot {
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    .ratings {
+      margin-top: 20px;
+    }
+
+    .rating-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #27272a;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 50px;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container details-container">
+
+    <a href="javascript:history.back()" class="btn btn-outline-secondary back-button">
+      <i class="fas fa-arrow-left"></i> Back to Recommendations
+    </a>
+
+    <div id="loading">Loading movie details...</div>
+    <div id="movieContent" class="details-grid" style="display: none;">
+      <div class="details-poster">
+        <img id="moviePoster" src="" alt="Movie Poster">
+      </div>
+      <div class="details-info">
+        <h1 id="movieTitle"></h1>
+        <div class="details-meta">
+          <span id="movieYear"></span>
+          <span id="movieRated"></span>
+          <span id="movieRuntime"></span>
+        </div>
+        <div class="details-plot">
+          <h3>Plot</h3>
+          <p id="moviePlot"></p>
+        </div>
+        <div class="details-actors">
+          <strong>Actors:</strong> <span id="movieActors"></span>
+        </div>
+        <div class="details-director" style="margin-top: 10px;">
+          <strong>Director:</strong> <span id="movieDirector"></span>
+        </div>
+        <div class="ratings">
+          <h3>Ratings</h3>
+          <div id="movieRatings"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/details.js"></script>
+</body>
+
+</html>

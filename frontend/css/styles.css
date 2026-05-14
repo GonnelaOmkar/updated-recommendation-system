@@ -38,6 +38,15 @@ body {
   margin-bottom: 30px;
   justify-content: center;
 }
+.recommendation-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.recommendation-link:hover .recommendation-card {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
 
 .film-frame {
   width: 20px;
@@ -1196,4 +1205,47 @@ body {
 .error-message {
   color: #ff6b6b;
   font-weight: 500;
+}
+
+/* Loading Overlay for Recommendations */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.loading-spinner {
+  text-align: center;
+  color: #fff;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4ecdc4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Disabled state for inputs and buttons */
+.search-input:disabled,
+.genre-input:disabled,
+.recommend-btn:disabled,
+.genre-recommend-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

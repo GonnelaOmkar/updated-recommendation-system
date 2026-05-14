@@ -1,7 +1,7 @@
 // Favorites Page JavaScript
 
-const AUTH_API_BASE = (window.AUTH_API_BASE || "http://localhost:8081").replace(/\/$/, "")
-const DEFAULT_API_BASE = "http://127.0.0.1:8001"
+const AUTH_API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
+const DEFAULT_API_BASE = "http://54.221.61.226:8000"
 const RAW_API_BASE = (typeof window !== "undefined" && window.API_BASE) || ""
 const API_BASE = /^https?:\/\//.test(RAW_API_BASE) ? RAW_API_BASE.replace(/\/$/, "") : DEFAULT_API_BASE
 
@@ -419,7 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`${API_BASE}/recommend/favorites/random/${active}?token=${encodeURIComponent(token)}`)
 
-      if (!res.ok) {
+      if (!res.ok && res.status !== 404) {
         throw new Error(`HTTP error! status: ${res.status}`)
       }
 

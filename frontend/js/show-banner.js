@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     authBanner.style.display = "block"
   }
 
-  const API_BASE = (window.AUTH_API_BASE || "http://localhost:8081").replace(/\/$/, "")
+  const API_BASE = (window.AUTH_API_BASE || "http://54.221.61.226:8081").replace(/\/$/, "")
 
   // --- LOGIC FOR THE MAIN LOGIN/SIGNUP PAGE ---
   if (isLoginPage) {
