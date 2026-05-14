@@ -2,11 +2,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy backend-auth package files
+COPY backend-auth/package*.json ./backend-auth/
 
-# Install dependencies
-RUN npm install
+# Install dependencies in backend-auth
+RUN cd backend-auth && npm install
 
 # Copy source code
 COPY backend-auth/ ./backend-auth/
